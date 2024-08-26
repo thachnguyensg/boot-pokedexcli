@@ -8,9 +8,10 @@ import (
 )
 
 func main() {
-	fmt.Println("Hello, World!")
+	initCommands()
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
+		fmt.Print("Pokedex > ")
 		scanned := scanner.Scan()
 
 		if !scanned {
@@ -18,10 +19,12 @@ func main() {
 		}
 
 		line := scanner.Text()
-		fmt.Println("input:", line)
-		if line == "exit" {
-			fmt.Println("Goodbye!")
-			os.Exit(0)
+
+		if command, ok := commands[line]; ok {
+			err := command.callback()
+			if err != nil {
+				log.Fatal(err.Error())
+			}
 		}
 	}
 }
