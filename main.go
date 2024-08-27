@@ -5,9 +5,14 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"github.com/thachnguyensg/boot-pokedexcli/internal/pokeapi"
 )
 
+var locationEndpoint *pokeapi.LocationEndpoint
+
 func main() {
+	locationEndpoint = pokeapi.NewLocationEndpoint("https://pokeapi.co/api/v2/location-area/")
 	initCommands()
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
@@ -23,7 +28,7 @@ func main() {
 		if command, ok := commands[line]; ok {
 			err := command.callback()
 			if err != nil {
-				log.Fatal(err.Error())
+				fmt.Println(err.Error())
 			}
 		}
 	}
